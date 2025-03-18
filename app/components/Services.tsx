@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Activity, Cpu, Code, BarChart3, Layout, Globe, ShoppingBag, CheckSquare } from "lucide-react"
+import { Cpu, Code, Layout, Globe, ShoppingBag, CheckSquare } from "lucide-react"
 
 const services = [
   {
