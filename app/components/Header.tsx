@@ -23,24 +23,27 @@ export default function Header() {
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <Link href="/" className="text-2xl font-bold text-primary">
-          Testora Labs
+          DigiSync Solutions
         </Link>
         <nav className="hidden md:flex space-x-6">
-          <Link href="#how-it-works" className="text-muted-foreground hover:text-primary">
-            How It Works
-          </Link>
           <Link href="#services" className="text-muted-foreground hover:text-primary">
             Services
           </Link>
+          <Link href="#how-it-works" className="text-muted-foreground hover:text-primary">
+            Process
+          </Link>
           <Link href="#pricing" className="text-muted-foreground hover:text-primary">
             Pricing
+          </Link>
+          <Link href="#case-studies" className="text-muted-foreground hover:text-primary">
+            Case Studies
           </Link>
           <Link href="#faq" className="text-muted-foreground hover:text-primary">
             FAQ
           </Link>
         </nav>
         <div className="hidden md:block">
-          <Button>Get Started</Button>
+          <Button>Free Consultation</Button>
         </div>
         <button className="md:hidden" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
           <Menu className="h-6 w-6" />
@@ -49,23 +52,25 @@ export default function Header() {
       {isMobileMenuOpen && (
         <div className="md:hidden mt-4 bg-background p-4 rounded-md shadow-md">
           <nav className="flex flex-col space-y-4">
-            <Link href="#how-it-works" className="text-muted-foreground hover:text-primary">
-              How It Works
-            </Link>
             <Link href="#services" className="text-muted-foreground hover:text-primary">
               Services
+            </Link>
+            <Link href="#how-it-works" className="text-muted-foreground hover:text-primary">
+              Process
             </Link>
             <Link href="#pricing" className="text-muted-foreground hover:text-primary">
               Pricing
             </Link>
+            <Link href="#case-studies" className="text-muted-foreground hover:text-primary">
+              Case Studies
+            </Link>
             <Link href="#faq" className="text-muted-foreground hover:text-primary">
               FAQ
             </Link>
-            <Button className="w-full">Get Started</Button>
+            <Button className="w-full">Free Consultation</Button>
           </nav>
         </div>
       )}
     </header>
   )
 }
-

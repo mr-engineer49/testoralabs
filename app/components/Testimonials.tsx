@@ -5,35 +5,45 @@ import { Quote } from "lucide-react"
 const testimonials = [
   {
     name: "Sarah Johnson",
-    role: "CTO, AdTech Innovators",
+    role: "Marketing Director, E-Commerce Solutions",
     content:
-      "AdTechQA's testing services have significantly improved the reliability of our ad serving platform. Their attention to detail is unmatched.",
-    avatar: "/placeholder.svg?height=40&width=40",
+      "DigiSync's native advertising strategy increased our click-through rates by 87% and conversion rates by 34%. Their technical team also improved our landing page load times, creating a seamless customer journey.",
+    avatar: "/api/placeholder/40/40",
   },
   {
     name: "Michael Chen",
-    role: "Product Manager, Digital Ads Co",
+    role: "CEO, SaaS Platform",
     content:
-      "The QA team at AdTechQA caught critical issues that would have impacted our campaign performance. They're an essential part of our development process now.",
-    avatar: "/placeholder.svg?height=40&width=40",
+      "The affiliate program DigiSync built for us has become our primary growth channel. Their technical implementation was flawless, and the QA process they established ensures we never have tracking issues.",
+    avatar: "/api/placeholder/40/40",
   },
   {
     name: "Emily Rodriguez",
-    role: "Head of Ad Ops, Global Media Group",
+    role: "Digital Marketing Manager, Retail Brand",
     content:
-      "Their support team is responsive and knowledgeable. They've helped us optimize our ad operations and improve our overall efficiency.",
-    avatar: "/placeholder.svg?height=40&width=40",
+      "We've worked with many agencies, but DigiSync is the first that truly understands both marketing strategy and technical implementation. Their holistic approach delivered a 3x ROI on our ad spend.",
+    avatar: "/api/placeholder/40/40",
+  },
+  {
+    name: "David Thompson",
+    role: "Founder, Financial Services Startup",
+    content:
+      "DigiSync's custom ad technology platform automated what used to take our team days to accomplish. Their development and QA processes are rigorous, and the results speak for themselves.",
+    avatar: "/api/placeholder/40/40",
   },
 ]
 
 export default function Testimonials() {
   return (
-    <section className="py-20 px-4 md:px-6 lg:px-8 bg-muted">
+    <section className="py-20 px-4 md:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">What Our Clients Say</h2>
-        <div className="grid md:grid-cols-3 gap-8">
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">Client Success Stories</h2>
+        <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
+          See how our integrated approach to digital marketing and technology has transformed businesses
+        </p>
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {testimonials.map((testimonial, index) => (
-            <Card key={index} className="relative">
+            <Card key={index} className="relative h-full">
               <Quote className="absolute top-4 right-4 h-8 w-8 text-muted-foreground opacity-20" />
               <CardHeader>
                 <div className="flex items-center gap-4">
@@ -62,4 +72,3 @@ export default function Testimonials() {
     </section>
   )
 }
-
