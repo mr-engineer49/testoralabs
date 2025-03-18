@@ -5,33 +5,43 @@ export default function Footer() {
   return (
     <footer className="py-12 px-4 md:px-6 lg:px-8 bg-muted">
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
-        <div>
+      <div>
           <Link href="/" className="text-2xl font-bold text-primary">
-            Testora Labs
+            |- Testora Labs -|
           </Link>
-          <p className="mt-2 text-sm text-muted-foreground">Elevating Ad Tech with Expert QA</p>
+          <p className="mt-2 text-sm text-muted-foreground">Integrated Advertising & Technology Solutions</p>
         </div>
         <div>
           <h3 className="font-semibold mb-3">Services</h3>
           <ul className="space-y-2">
             <li>
               <Link href="#" className="text-sm text-muted-foreground hover:text-primary">
-                Ad Server Testing
+                Native Advertising
               </Link>
             </li>
             <li>
               <Link href="#" className="text-sm text-muted-foreground hover:text-primary">
-                DSP & SSP QA
+                Affiliate Marketing
               </Link>
             </li>
             <li>
               <Link href="#" className="text-sm text-muted-foreground hover:text-primary">
-                Analytics Verification
+                Online Ad Management
               </Link>
             </li>
             <li>
               <Link href="#" className="text-sm text-muted-foreground hover:text-primary">
-                Ad Creative Testing
+                AdTech Development
+              </Link>
+            </li>
+            <li>
+              <Link href="#" className="text-sm text-muted-foreground hover:text-primary">
+                QA & Testing
+              </Link>
+            </li>
+            <li>
+              <Link href="#" className="text-sm text-muted-foreground hover:text-primary">
+                Web Development
               </Link>
             </li>
           </ul>
@@ -46,12 +56,17 @@ export default function Footer() {
             </li>
             <li>
               <Link href="#" className="text-sm text-muted-foreground hover:text-primary">
-                Careers
+                Case Studies
               </Link>
             </li>
             <li>
               <Link href="#" className="text-sm text-muted-foreground hover:text-primary">
                 Blog
+              </Link>
+            </li>
+            <li>
+              <Link href="#" className="text-sm text-muted-foreground hover:text-primary">
+                Careers
               </Link>
             </li>
             <li>

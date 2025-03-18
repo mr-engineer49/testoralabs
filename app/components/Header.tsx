@@ -23,7 +23,7 @@ export default function Header() {
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <Link href="/" className="text-2xl font-bold text-primary">
-          DigiSync Solutions
+          |- Testora Labs -|
         </Link>
         <nav className="hidden md:flex space-x-6">
           <Link href="#services" className="text-muted-foreground hover:text-primary">
