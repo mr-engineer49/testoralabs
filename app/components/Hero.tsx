@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button"
-import Image from 'next/image'
+import Image from 'next/image';
+import BackImage from "@/app/components/images/background.jpg"
 
 export default function Hero() {
   return (
@@ -7,7 +8,7 @@ export default function Hero() {
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary-foreground/90" />
         <Image
-          src="/api/placeholder/1920/1080"
+          src={BackImage}
           alt="Digital Marketing Background"
           width={1920}
           height={1080}

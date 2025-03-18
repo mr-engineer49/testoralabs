@@ -6,7 +6,7 @@ import type React from "react" // Added import for React
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "AdTechQA - Expert Software Testing & QA for Ad Technology",
+  title: "Testora Communication - Expert Software Testing & QA for Ad Technology",
   description:
     "Comprehensive software testing, QA services, and support solutions for your online advertising technology.",
 }
