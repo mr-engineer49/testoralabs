@@ -12,7 +12,7 @@ export default function Hero() {
           alt="Digital Marketing Background"
           width={1920}
           height={1080}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover opacity-75"
         />
       </div>
       <div className="relative z-10 max-w-4xl mx-auto text-center text-white">
