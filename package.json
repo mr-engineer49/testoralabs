@@ -16,9 +16,7 @@
     "class-variance-authority": "^0.7.1",
     "framer-motion": "^12.5.0",
     "lucide-react": "^0.475.0",
-    "next": "14.2.16",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "next": "^14.2.25"
   },
   "devDependencies": {
     "@types/node": "^20",
