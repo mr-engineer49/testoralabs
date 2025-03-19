@@ -35,8 +35,8 @@ export default function Header() {
           <Link href="#pricing" className="text-muted-foreground hover:text-primary">
             Pricing
           </Link>
-          <Link href="#case-studies" className="text-muted-foreground hover:text-primary">
-            Case Studies
+          <Link href="/blogs" className="text-muted-foreground hover:text-primary">
+            Blogs / News
           </Link>
           <Link href="#faq" className="text-muted-foreground hover:text-primary">
             FAQ
