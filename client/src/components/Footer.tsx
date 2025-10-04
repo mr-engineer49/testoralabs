@@ -1,16 +1,53 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 import { Mail, Phone, MapPin } from "lucide-react";
 import { SiLinkedin, SiX, SiFacebook, SiInstagram } from "react-icons/si";
 import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
 
 export default function Footer() {
+  const { toast } = useToast();
   const [email, setEmail] = useState("");
+
+  const submitNewsletter = useMutation({
+    mutationFn: async (emailData: string) => {
+      const res = await apiRequest("POST", "/api/leads", {
+        name: "Newsletter Subscriber",
+        email: emailData,
+        service: "newsletter",
+        message: "Newsletter subscription request"
+      });
+      return await res.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "Subscribed!",
+        description: "You've been added to our newsletter. Check your inbox for confirmation.",
+      });
+      setEmail("");
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to subscribe. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
 
   const handleNewsletterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Newsletter signup:", email);
-    setEmail("");
+    if (!email) {
+      toast({
+        title: "Validation Error",
+        description: "Please enter your email address.",
+        variant: "destructive",
+      });
+      return;
+    }
+    submitNewsletter.mutate(email);
   };
 
   return (
@@ -91,8 +128,9 @@ export default function Footer() {
                 type="submit" 
                 size="sm"
                 className="bg-background text-foreground hover:bg-background/90"
+                disabled={submitNewsletter.isPending}
               >
-                Subscribe
+                {submitNewsletter.isPending ? "..." : "Subscribe"}
               </Button>
             </form>
           </div>

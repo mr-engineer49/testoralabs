@@ -71,6 +71,13 @@ const plans = [
 ];
 
 export default function PricingSection() {
+  const scrollToContact = () => {
+    const contactSection = document.querySelector('#contact-form');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <section className="py-24 px-6">
       <div className="max-w-7xl mx-auto">
@@ -116,7 +123,7 @@ export default function PricingSection() {
                 data-testid={`button-pricing-${index}`}
                 className="w-full" 
                 variant={plan.popular ? "default" : "outline"}
-                onClick={() => console.log(`Selected plan: ${plan.name}`)}
+                onClick={scrollToContact}
               >
                 {plan.cta}
               </Button>
