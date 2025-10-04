@@ -2,19 +2,52 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card } from "@/components/ui/card";
+import { useToast } from "@/hooks/use-toast";
 import heroImage from "@assets/generated_images/Digital_marketing_agency_hero_f41f03c7.png";
 import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
 
 export default function HeroSection() {
+  const { toast } = useToast();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     service: "",
   });
 
+  const submitLead = useMutation({
+    mutationFn: async (data: typeof formData) => {
+      const res = await apiRequest("POST", "/api/leads", data);
+      return await res.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "Success!",
+        description: "We'll contact you within 24 hours to discuss your project.",
+      });
+      setFormData({ name: "", email: "", service: "" });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to submit form. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Hero form submitted:", formData);
+    if (!formData.name || !formData.email || !formData.service) {
+      toast({
+        title: "Validation Error",
+        description: "Please fill in all required fields.",
+        variant: "destructive",
+      });
+      return;
+    }
+    submitLead.mutate(formData);
   };
 
   return (
@@ -72,14 +105,16 @@ export default function HeroSection() {
                 data-testid="button-hero-submit"
                 type="submit" 
                 className="flex-1"
+                disabled={submitLead.isPending}
               >
-                Get Free Strategy Session
+                {submitLead.isPending ? "Submitting..." : "Get Free Strategy Session"}
               </Button>
               <Button 
                 data-testid="button-hero-view-work"
                 type="button" 
                 variant="outline" 
                 className="flex-1 backdrop-blur-sm bg-background/50"
+                onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
               >
                 View Our Work
               </Button>

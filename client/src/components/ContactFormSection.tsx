@@ -3,10 +3,14 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card } from "@/components/ui/card";
+import { useToast } from "@/hooks/use-toast";
 import { Mail, Phone, MapPin, Clock } from "lucide-react";
 import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
 
 export default function ContactFormSection() {
+  const { toast } = useToast();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -15,13 +19,42 @@ export default function ContactFormSection() {
     message: "",
   });
 
+  const submitLead = useMutation({
+    mutationFn: async (data: typeof formData) => {
+      const res = await apiRequest("POST", "/api/leads", data);
+      return await res.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "Thank you for contacting us!",
+        description: "Our team will review your request and get back to you within 24 hours.",
+      });
+      setFormData({ name: "", email: "", phone: "", service: "", message: "" });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to submit form. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Contact form submitted:", formData);
+    if (!formData.name || !formData.email || !formData.service) {
+      toast({
+        title: "Validation Error",
+        description: "Please fill in all required fields.",
+        variant: "destructive",
+      });
+      return;
+    }
+    submitLead.mutate(formData);
   };
 
   return (
-    <section className="py-24 px-6">
+    <section id="contact-form" className="py-24 px-6">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="font-heading font-bold text-4xl md:text-5xl mb-4">Get Started Today</h2>
@@ -104,8 +137,9 @@ export default function ContactFormSection() {
                 type="submit" 
                 size="lg" 
                 className="w-full"
+                disabled={submitLead.isPending}
               >
-                Schedule Free Consultation
+                {submitLead.isPending ? "Submitting..." : "Schedule Free Consultation"}
               </Button>
             </form>
           </Card>
