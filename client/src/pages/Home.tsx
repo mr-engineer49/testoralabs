@@ -2,7 +2,8 @@ import HeroSection from "@/components/HeroSection";
 import ProcessSection from "@/components/ProcessSection";
 import ServicesSection from "@/components/ServicesSection";
 import PricingSection from "@/components/PricingSection";
-import TestimonialsSection from "@/components/TestimonialsSection";
+import WhyChooseUsSection from "@/components/WhyChooseUsSection";
+import ContactFormSection from "@/components/ContactFormSection";
 import FAQSection from "@/components/FAQSection";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
@@ -13,8 +14,9 @@ export default function Home() {
       <HeroSection />
       <ProcessSection />
       <ServicesSection />
+      <WhyChooseUsSection />
       <PricingSection />
-      <TestimonialsSection />
+      <ContactFormSection />
       <FAQSection />
       <CTASection />
       <Footer />
