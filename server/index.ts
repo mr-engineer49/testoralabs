@@ -8,7 +8,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// API request logging middleware
+// Logging middleware for API requests
 app.use((req, res, next) => {
   const start = Date.now();
   const path = req.path;
@@ -27,9 +27,7 @@ app.use((req, res, next) => {
       if (capturedJsonResponse) {
         logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
       }
-      if (logLine.length > 120) {
-        logLine = logLine.slice(0, 119) + "…";
-      }
+      if (logLine.length > 120) logLine = logLine.slice(0, 119) + "…";
       log(logLine);
     }
   });
@@ -37,30 +35,30 @@ app.use((req, res, next) => {
   next();
 });
 
-// Main IIFE to setup server and routes
+// Setup API routes
 (async () => {
   const server = await registerRoutes(app);
 
-  // Global error handling middleware
+  // Global error handler
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     const status = err.status || err.statusCode || 500;
     const message = err.message || "Internal Server Error";
     res.status(status).json({ message });
-    console.error(err); // Optional: log full error stack
+    console.error(err); // optional full error logging
   });
 
-  // Development: use Vite middleware for HMR
+  // Dev: Vite middleware
   if (app.get("env") === "development") {
     await setupVite(app, server);
   } else {
-    // Production: serve built React app
+    // Prod: Serve static SPA
     serveStatic(app);
   }
 
-  // Use the PORT provided by Vercel or default to 3000
+  // Production: Only use PORT from environment (Vercel sets it)
   const port = parseInt(process.env.PORT || "3000", 10);
 
-  // Only bind to port (0.0.0.0 is default in Vercel)
+  // Remove host binding; Vercel handles routing automatically
   server.listen(port, () => {
     log(`Server running on port ${port}`);
   });

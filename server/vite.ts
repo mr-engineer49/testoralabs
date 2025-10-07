@@ -19,6 +19,9 @@ export function log(message: string, source = "express") {
   console.log(`${formattedTime} [${source}] ${message}`);
 }
 
+/**
+ * Setup Vite for development only
+ */
 export async function setupVite(app: Express, server: Server) {
   const serverOptions = {
     middlewareMode: true,
@@ -40,24 +43,27 @@ export async function setupVite(app: Express, server: Server) {
     appType: "custom",
   });
 
+  // Vite dev middleware
   app.use(vite.middlewares);
+
+  // Always serve index.html for SPA routing
   app.use("*", async (req, res, next) => {
     const url = req.originalUrl;
 
     try {
       const clientTemplate = path.resolve(
-        import.meta.dirname,
-        "..",
+        process.cwd(), // use CWD for Vercel compatibility
         "client",
         "index.html",
       );
 
-      // always reload the index.html file from disk incase it changes
       let template = await fs.promises.readFile(clientTemplate, "utf-8");
+      // Add cache-busting for JS files
       template = template.replace(
         `src="/src/main.tsx"`,
         `src="/src/main.tsx?v=${nanoid()}"`,
       );
+
       const page = await vite.transformIndexHtml(url, template);
       res.status(200).set({ "Content-Type": "text/html" }).end(page);
     } catch (e) {
@@ -67,18 +73,22 @@ export async function setupVite(app: Express, server: Server) {
   });
 }
 
+/**
+ * Serve production build
+ */
 export function serveStatic(app: Express) {
-  const distPath = path.resolve(import.meta.dirname, "public");
+  const distPath = path.resolve(process.cwd(), "dist/public");
 
   if (!fs.existsSync(distPath)) {
     throw new Error(
-      `Could not find the build directory: ${distPath}, make sure to build the client first`,
+      `Could not find the build directory: ${distPath}, make sure to run "npm run build" first`,
     );
   }
 
-  app.use(express.static(distPath));
+  // Serve static files with no caching
+  app.use(express.static(distPath, { maxAge: 0 }));
 
-  // fall through to index.html if the file doesn't exist
+  // Fall through to index.html for SPA routing
   app.use("*", (_req, res) => {
     res.sendFile(path.resolve(distPath, "index.html"));
   });
