@@ -5,31 +5,31 @@ const steps = [
   {
     number: 1,
     title: "Discovery",
-    description: "We analyze your business goals, target audience, and current marketing performance to identify opportunities.",
+    description: "I analyze your business goals, target audience, and current marketing performance to identify opportunities.",
     icon: Search,
   },
   {
     number: 2,
     title: "Strategy",
-    description: "Our team develops a tailored advertising and technology strategy aligned with your business objectives.",
+    description: "I develop a tailored advertising and technology strategy aligned with your business objectives.",
     icon: Lightbulb,
   },
   {
     number: 3,
     title: "Implementation",
-    description: "We execute the strategy through precise campaign setup, development, and rigorous QA processes.",
+    description: "I execute the strategy through precise campaign setup, development, and rigorous QA processes.",
     icon: Rocket,
   },
   {
     number: 4,
     title: "Optimization",
-    description: "Continuous data analysis and iterative improvements to maximize ROI and campaign effectiveness.",
+    description: "I perform Continuous data analysis and iterative improvements to maximize ROI and campaign effectiveness.",
     icon: TrendingUp,
   },
   {
     number: 5,
     title: "Scale",
-    description: "Once we've established what works, we scale successful campaigns and strategies for maximum growth.",
+    description: "I perform Once we've established what works, we scale successful campaigns and strategies for maximum growth.",
     icon: Zap,
   },
 ];
@@ -39,7 +39,7 @@ export default function ProcessSection() {
     <section className="py-24 px-6">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="font-heading font-bold text-4xl md:text-5xl mb-4">Our Process</h2>
+          <h2 className="font-heading font-bold text-4xl md:text-5xl mb-4">The Process</h2>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
             A systematic approach to delivering measurable results for your digital marketing initiatives
           </p>

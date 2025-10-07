@@ -69,7 +69,7 @@ export default function ServicesSection() {
     <section id="services" className="py-24 px-6 bg-card/30">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="font-heading font-bold text-4xl md:text-5xl mb-4">Our Services</h2>
+          <h2 className="font-heading font-bold text-4xl md:text-5xl mb-4">My Services</h2>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
             Comprehensive digital marketing and technology solutions to power your business growth
           </p>

@@ -33,7 +33,7 @@ export default function CTASection() {
             className="backdrop-blur-sm bg-primary-foreground/10 text-primary-foreground border-primary-foreground/30 hover:bg-primary-foreground/20"
             onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
           >
-            View Our Services
+            View My Services
           </Button>
         </div>
       </div>

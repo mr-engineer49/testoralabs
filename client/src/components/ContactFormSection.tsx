@@ -8,49 +8,51 @@ import { Mail, Phone, MapPin, Clock } from "lucide-react";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
+import  supabase  from "@/supabaseClient";
+
 
 export default function ContactFormSection() {
   const { toast } = useToast();
   const [formData, setFormData] = useState({
-    name: "",
+    fullName: "",
     email: "",
-    phone: "",
-    service: "",
+    selected_service: "",
     message: "",
+    phone: "",
   });
 
-  const submitLead = useMutation({
-    mutationFn: async (data: typeof formData) => {
-      const res = await apiRequest("POST", "/api/leads", data);
-      return await res.json();
-    },
-    onSuccess: () => {
-      toast({
-        title: "Thank you for contacting us!",
-        description: "Our team will review your request and get back to you within 24 hours.",
-      });
-      setFormData({ name: "", email: "", phone: "", service: "", message: "" });
-    },
-    onError: (error: any) => {
-      toast({
-        title: "Error",
-        description: error.message || "Failed to submit form. Please try again.",
-        variant: "destructive",
-      });
-    },
-  });
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!formData.name || !formData.email || !formData.service) {
+    if (!formData.fullName.trim() || !formData.email.trim() || !formData.selected_service.trim() || !formData.message.trim()) {
       toast({
-        title: "Validation Error",
-        description: "Please fill in all required fields.",
+        title: "⚠️ Missing Information",
+        description: "Please fill out all fields before submitting.",
         variant: "destructive",
       });
       return;
     }
-    submitLead.mutate(formData);
+
+    const { data, error } = await supabase
+      .from('get_free_strategy_hero_element')
+      .insert([
+        { fullName: formData.fullName, email: formData.email, selected_service: formData.selected_service, message: formData.message, phone: formData.phone }
+      ]);
+
+    if (error) {
+      toast({
+        title: "❌ Error! Try again",
+        description: "An error occurred while submitting your information.",
+      });
+      console.error('Error inserting data:', error.message);
+    } else {
+      console.log('Data inserted successfully:', data);
+      toast({
+        title: "✅ Thank You! Your information has been submitted successfully.",
+        description: "We will get back to you as soon as possible.",
+      });
+      setFormData({ fullName: '', email: '', selected_service: '', message: '', phone: '' }); 
+    }
   };
 
   return (
@@ -59,7 +61,7 @@ export default function ContactFormSection() {
         <div className="text-center mb-16">
           <h2 className="font-heading font-bold text-4xl md:text-5xl mb-4">Get Started Today</h2>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-            Ready to transform your digital marketing? Fill out the form below and our team will get back to you within 24 hours.
+            Ready to transform your digital marketing? Fill out the form below and I will get back to you within 24 hours.
           </p>
         </div>
 
@@ -72,8 +74,8 @@ export default function ContactFormSection() {
                   <Input
                     data-testid="input-contact-name"
                     placeholder="John Doe"
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    value={formData.fullName}
+                    onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
                     required
                   />
                 </div>
@@ -103,7 +105,7 @@ export default function ContactFormSection() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-2">Service Interest *</label>
-                  <Select value={formData.service} onValueChange={(value) => setFormData({ ...formData, service: value })} required>
+                  <Select value={formData.selected_service} onValueChange={(value) => setFormData({ ...formData, selected_service: value })} required>
                     <SelectTrigger data-testid="select-contact-service">
                       <SelectValue placeholder="Select a service" />
                     </SelectTrigger>
@@ -137,9 +139,8 @@ export default function ContactFormSection() {
                 type="submit" 
                 size="lg" 
                 className="w-full"
-                disabled={submitLead.isPending}
               >
-                {submitLead.isPending ? "Submitting..." : "Schedule Free Consultation"}
+                Schedule Free Consultation
               </Button>
             </form>
           </Card>
@@ -152,8 +153,8 @@ export default function ContactFormSection() {
                 </div>
                 <div>
                   <h4 className="font-semibold mb-1">Email Us</h4>
-                  <a href="mailto:info@digisync.com" className="text-sm text-muted-foreground hover:text-primary">
-                    info@digisync.com
+                  <a href="mailto:eneahysa49@gmail.com" className="text-sm text-muted-foreground hover:text-primary">
+                    freelancer-enea@testoralabs.com
                   </a>
                 </div>
               </div>
@@ -166,8 +167,8 @@ export default function ContactFormSection() {
                 </div>
                 <div>
                   <h4 className="font-semibold mb-1">Call Us</h4>
-                  <a href="tel:+15551234567" className="text-sm text-muted-foreground hover:text-primary">
-                    +1 (555) 123-4567
+                  <a href="#" className="text-sm text-muted-foreground hover:text-primary">
+                    No phone number available
                   </a>
                 </div>
               </div>
@@ -179,10 +180,9 @@ export default function ContactFormSection() {
                   <MapPin className="w-5 h-5 text-primary" />
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-1">Visit Us</h4>
+                  <h4 className="font-semibold mb-1">Location</h4>
                   <p className="text-sm text-muted-foreground">
-                    San Francisco, CA<br />
-                    United States
+                    Tirana, Albania
                   </p>
                 </div>
               </div>
@@ -196,8 +196,8 @@ export default function ContactFormSection() {
                 <div>
                   <h4 className="font-semibold mb-1">Business Hours</h4>
                   <p className="text-sm text-muted-foreground">
-                    Mon - Fri: 9:00 AM - 6:00 PM<br />
-                    Sat - Sun: Closed
+                    Mon - Sat: Available<br />
+                    Sun: Not Available
                   </p>
                 </div>
               </div>

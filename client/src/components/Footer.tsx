@@ -6,48 +6,46 @@ import { SiLinkedin, SiX, SiFacebook, SiInstagram } from "react-icons/si";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
+import supabase from "@/supabaseClient";
 
 export default function Footer() {
   const { toast } = useToast();
-  const [email, setEmail] = useState("");
-
-  const submitNewsletter = useMutation({
-    mutationFn: async (emailData: string) => {
-      const res = await apiRequest("POST", "/api/leads", {
-        name: "Newsletter Subscriber",
-        email: emailData,
-        service: "newsletter",
-        message: "Newsletter subscription request"
-      });
-      return await res.json();
-    },
-    onSuccess: () => {
-      toast({
-        title: "Subscribed!",
-        description: "You've been added to our newsletter. Check your inbox for confirmation.",
-      });
-      setEmail("");
-    },
-    onError: (error: any) => {
-      toast({
-        title: "Error",
-        description: error.message || "Failed to subscribe. Please try again.",
-        variant: "destructive",
-      });
-    },
+  const [formData, setFormData] = useState({
+    email: "",
   });
 
-  const handleNewsletterSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email) {
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+
+    if (!formData.email.trim()) {
       toast({
-        title: "Validation Error",
-        description: "Please enter your email address.",
+        title: "⚠️ Missing Information",
+        description: "Please fill out all fields before submitting.",
         variant: "destructive",
       });
       return;
     }
-    submitNewsletter.mutate(email);
+
+    const { data, error } = await supabase
+      .from('get_free_strategy_hero_element')
+      .insert([
+        { email: formData.email }
+      ]);
+
+    if (error) {
+      toast({
+        title: "❌ Error! Try again",
+        description: "An error occurred while submitting your information.",
+      });
+      console.error('Error inserting data:', error.message);
+    } else {
+      console.log('Data inserted successfully:', data);
+      toast({
+        title: "✅ Thank You! Your information has been submitted successfully.",
+        description: "We will get back to you as soon as possible.",
+      });
+      setFormData({ email: '' }); 
+    }
   };
 
   return (
@@ -55,21 +53,21 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           <div>
-            <h3 className="font-heading font-bold text-2xl mb-4">DigiSync</h3>
+            <h3 className="font-heading font-bold text-2xl mb-4">TestoraLabs</h3>
             <p className="text-background/70 text-sm mb-4">
               Full-spectrum digital marketing solutions to power your business growth.
             </p>
             <div className="flex gap-4">
-              <a href="#" className="hover-elevate p-2" data-testid="link-social-linkedin">
+              <a href="https://www.linkedin.com/in/eneahs/" className="hover-elevate p-2" data-testid="link-social-linkedin">
                 <SiLinkedin className="w-5 h-5" />
               </a>
-              <a href="#" className="hover-elevate p-2" data-testid="link-social-twitter">
+              <a href="https://x.com/enyoh9" className="hover-elevate p-2" data-testid="link-social-twitter">
                 <SiX className="w-5 h-5" />
               </a>
-              <a href="#" className="hover-elevate p-2" data-testid="link-social-facebook">
+              <a href="https://www.facebook.com/eneahysa10" className="hover-elevate p-2" data-testid="link-social-facebook">
                 <SiFacebook className="w-5 h-5" />
               </a>
-              <a href="#" className="hover-elevate p-2" data-testid="link-social-instagram">
+              <a href="https://www.instagram.com/testoralabs" className="hover-elevate p-2" data-testid="link-social-instagram">
                 <SiInstagram className="w-5 h-5" />
               </a>
             </div>
@@ -92,19 +90,19 @@ export default function Footer() {
             <ul className="space-y-3 text-sm text-background/70">
               <li className="flex items-start">
                 <Mail className="w-4 h-4 mr-2 mt-0.5" />
-                <a href="mailto:info@digisync.com" className="hover:text-background" data-testid="link-email">
-                  info@digisync.com
+                <a href="mailto:eneahysa49@gmail.com" className="hover:text-background" data-testid="link-email">
+                  freelancer-enea@testoralabs.com
                 </a>
               </li>
               <li className="flex items-start">
                 <Phone className="w-4 h-4 mr-2 mt-0.5" />
-                <a href="tel:+15551234567" className="hover:text-background" data-testid="link-phone">
-                  +1 (555) 123-4567
+                <a href="#" className="hover:text-background" data-testid="link-phone">
+                  No phone number available
                 </a>
               </li>
               <li className="flex items-start">
                 <MapPin className="w-4 h-4 mr-2 mt-0.5" />
-                <span>San Francisco, CA</span>
+                <span>Tirane, Albania</span>
               </li>
             </ul>
           </div>
@@ -114,13 +112,13 @@ export default function Footer() {
             <p className="text-sm text-background/70 mb-4">
               Get the latest marketing insights delivered to your inbox.
             </p>
-            <form onSubmit={handleNewsletterSubmit} className="flex gap-2">
+            <form onSubmit={handleSubmit} className="flex gap-2">
               <Input
                 data-testid="input-newsletter-email"
                 type="email"
                 placeholder="Your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 className="bg-background/10 border-background/30 text-background placeholder:text-background/50"
               />
               <Button 
@@ -128,9 +126,8 @@ export default function Footer() {
                 type="submit" 
                 size="sm"
                 className="bg-background text-foreground hover:bg-background/90"
-                disabled={submitNewsletter.isPending}
               >
-                {submitNewsletter.isPending ? "..." : "Subscribe"}
+                Subscribe
               </Button>
             </form>
           </div>
@@ -138,7 +135,7 @@ export default function Footer() {
 
         <div className="border-t border-background/20 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-background/70">
-            <p>&copy; 2025 DigiSync. All rights reserved.</p>
+            <p>&copy; 2025 TestoraLabs. All rights reserved.</p>
             <div className="flex gap-6">
               <a href="#" className="hover:text-background" data-testid="link-privacy">Privacy Policy</a>
               <a href="#" className="hover:text-background" data-testid="link-terms">Terms of Service</a>

@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 const plans = [
   {
     name: "Starter",
-    price: "$499",
+    price: "$650 - $1600",
     description: "For small businesses starting their digital journey",
     features: [
       "Single platform ad management",
@@ -20,7 +20,7 @@ const plans = [
   },
   {
     name: "Growth",
-    price: "$1,199",
+    price: "$1,199 - $2,800",
     description: "For growing businesses seeking more channels",
     features: [
       "Multi-platform ad management",
@@ -35,7 +35,7 @@ const plans = [
   },
   {
     name: "Professional",
-    price: "$2,499",
+    price: "$2,499+",
     description: "For established businesses looking to scale",
     features: [
       "Comprehensive ad management (all channels)",

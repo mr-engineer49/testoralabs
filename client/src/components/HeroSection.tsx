@@ -7,48 +7,51 @@ import heroImage from "@assets/generated_images/Digital_marketing_agency_hero_f4
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
+import  supabase  from '@/supabaseClient';
+
 
 export default function HeroSection() {
   const { toast } = useToast();
   const [formData, setFormData] = useState({
-    name: "",
+    fullName: "",
     email: "",
-    service: "",
+    selected_service: "",
   });
 
-  const submitLead = useMutation({
-    mutationFn: async (data: typeof formData) => {
-      const res = await apiRequest("POST", "/api/leads", data);
-      return await res.json();
-    },
-    onSuccess: () => {
-      toast({
-        title: "Success!",
-        description: "We'll contact you within 24 hours to discuss your project.",
-      });
-      setFormData({ name: "", email: "", service: "" });
-    },
-    onError: (error: any) => {
-      toast({
-        title: "Error",
-        description: error.message || "Failed to submit form. Please try again.",
-        variant: "destructive",
-      });
-    },
-  });
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!formData.name || !formData.email || !formData.service) {
+    if (!formData.fullName.trim() || !formData.email.trim() || !formData.selected_service.trim()) {
       toast({
-        title: "Validation Error",
-        description: "Please fill in all required fields.",
+        title: "⚠️ Missing Information",
+        description: "Please fill out all fields before submitting.",
         variant: "destructive",
       });
       return;
     }
-    submitLead.mutate(formData);
+
+    const { data, error } = await supabase
+      .from('get_free_strategy_hero_element')
+      .insert([
+        { fullName: formData.fullName, email: formData.email, selected_service: formData.selected_service }
+      ]);
+
+    if (error) {
+      toast({
+        title: "❌ Error! Try again",
+        description: "An error occurred while submitting your information.",
+      });
+      console.error('Error inserting data:', error.message);
+    } else {
+      console.log('Data inserted successfully:', data);
+      toast({
+        title: "✅ Thank You! Your information has been submitted successfully.",
+        description: "We will get back to you as soon as possible.",
+      });
+      setFormData({ fullName: '', email: '', selected_service: '' }); 
+    }
   };
+
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -72,14 +75,14 @@ export default function HeroSection() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Input
-                data-testid="input-hero-name"
+                data-testid="fullName"
                 placeholder="Your Name"
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                value={formData.fullName}
+                onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
                 className="bg-background"
               />
               <Input
-                data-testid="input-hero-email"
+                data-testid="email"
                 type="email"
                 placeholder="Your Email"
                 value={formData.email}
@@ -87,8 +90,8 @@ export default function HeroSection() {
                 className="bg-background"
               />
             </div>
-            <Select value={formData.service} onValueChange={(value) => setFormData({ ...formData, service: value })}>
-              <SelectTrigger data-testid="select-hero-service" className="bg-background">
+            <Select value={formData.selected_service} onValueChange={(value) => setFormData({ ...formData, selected_service: value })}>
+              <SelectTrigger data-testid="selected_service" className="bg-background">
                 <SelectValue placeholder="Select Service Interest" />
               </SelectTrigger>
               <SelectContent>
@@ -105,9 +108,8 @@ export default function HeroSection() {
                 data-testid="button-hero-submit"
                 type="submit" 
                 className="flex-1"
-                disabled={submitLead.isPending}
               >
-                {submitLead.isPending ? "Submitting..." : "Get Free Strategy Session"}
+                Get Free Strategy Session
               </Button>
               <Button 
                 data-testid="button-hero-view-work"
@@ -121,7 +123,7 @@ export default function HeroSection() {
             </div>
           </form>
           <p className="text-sm text-muted-foreground mt-6">
-            🎯 Trusted by 500+ businesses worldwide
+            🎯 My <strong className="text-primary">Goal</strong> is to help you <strong className="text-green-500">grow your business and Succeed </strong>in your digital marketing journey
           </p>
         </Card>
       </div>
